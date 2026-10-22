@@ -22,6 +22,7 @@ export default function SignupPage() {
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/en-attente`,
         data: {
+          feg: true,
           prenom: String(fd.get("prenom")).trim(),
           nom: String(fd.get("nom")).trim(),
           tel: String(fd.get("tel")).trim(),
@@ -57,6 +58,7 @@ export default function SignupPage() {
           <h2 style={{ fontSize: 24 }}>Demander un accès</h2>
         </div>
         <p className="muted">Votre demande sera validée par un administrateur du groupe.</p>
+        <p className="small muted">Vous avez déjà un compte avec cet email ? <Link href="/login">Connectez-vous</Link> directement : la demande d&apos;accès vous sera proposée.</p>
         {error && <div className="alert alert-error" role="alert">{error}</div>}
         <div className="fields">
           <label className="field">Prénom<input className="input" name="prenom" required autoComplete="given-name" /></label>

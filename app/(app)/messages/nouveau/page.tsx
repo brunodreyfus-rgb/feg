@@ -10,7 +10,7 @@ export default async function NewMessagePage({ searchParams }: { searchParams: P
   const { supabase, me } = await requireMember();
   const convs = await getConversations(supabase, me.id);
   const { data } = await supabase
-    .from("profiles")
+    .from("feg_profiles")
     .select("id, prenom, nom, tel, show_tel, ville, secteur")
     .eq("status", "approved")
     .neq("id", me.id)

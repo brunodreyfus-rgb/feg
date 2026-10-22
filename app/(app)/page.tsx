@@ -14,7 +14,7 @@ export default async function AnnuairePage({
   const { supabase } = await requireMember();
 
   const { data } = await supabase
-    .from("profiles")
+    .from("feg_profiles")
     .select("*")
     .eq("status", "approved")
     .order("prenom", { ascending: true });

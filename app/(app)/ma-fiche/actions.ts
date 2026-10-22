@@ -23,9 +23,9 @@ export async function saveProfile(formData: FormData) {
     if (file.size > MAX_IMAGE) redirect("/ma-fiche?err=taille");
     const ext = file.type.split("/")[1].replace("jpeg", "jpg");
     const path = `${me.id}/avatar-${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from("avatars").upload(path, file, { contentType: file.type });
+    const { error } = await supabase.storage.from("feg-avatars").upload(path, file, { contentType: file.type });
     if (error) redirect("/ma-fiche?err=upload");
-    avatar_url = supabase.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+    avatar_url = supabase.storage.from("feg-avatars").getPublicUrl(path).data.publicUrl;
   }
   if (formData.get("remove_avatar") === "on") avatar_url = null;
 
@@ -54,7 +54,7 @@ export async function saveProfile(formData: FormData) {
     avatar_url,
   };
 
-  const { error } = await supabase.from("profiles").update(update).eq("id", me.id);
+  const { error } = await supabase.from("feg_profiles").update(update).eq("id", me.id);
   if (error) redirect("/ma-fiche?err=save");
 
   revalidatePath("/", "layout");

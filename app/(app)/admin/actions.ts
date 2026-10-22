@@ -6,7 +6,7 @@ async function setStatus(formData: FormData, status: "approved" | "rejected" | "
   const { supabase, me } = await requireAdmin();
   const id = String(formData.get("id"));
   if (id === me.id) return;
-  await supabase.from("profiles").update({ status }).eq("id", id);
+  await supabase.from("feg_profiles").update({ status }).eq("id", id);
   revalidatePath("/", "layout");
 }
 
@@ -19,6 +19,6 @@ export async function toggleAdmin(formData: FormData) {
   const id = String(formData.get("id"));
   if (id === me.id) return;
   const makeAdmin = formData.get("make") === "1";
-  await supabase.from("profiles").update({ is_admin: makeAdmin }).eq("id", id);
+  await supabase.from("feg_profiles").update({ is_admin: makeAdmin }).eq("id", id);
   revalidatePath("/admin");
 }

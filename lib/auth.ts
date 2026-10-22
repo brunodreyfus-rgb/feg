@@ -10,7 +10,7 @@ export async function requireMember() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: me } = await supabase.from("profiles").select("*").eq("id", user.id).single<Profile>();
+  const { data: me } = await supabase.from("feg_profiles").select("*").eq("id", user.id).single<Profile>();
   if (!me || me.status !== "approved") redirect("/en-attente");
 
   return { supabase, user, me };

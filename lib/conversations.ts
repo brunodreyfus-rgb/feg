@@ -17,7 +17,7 @@ export type ConvSummary = {
 
 export async function getConversations(supabase: SupabaseClient, meId: string): Promise<ConvSummary[]> {
   const { data: convs } = await supabase
-    .from("conversations")
+    .from("feg_conversations")
     .select("id, title, is_group, is_broadcast, last_message_at")
     .order("last_message_at", { ascending: false });
   if (!convs?.length) return [];
@@ -25,11 +25,11 @@ export async function getConversations(supabase: SupabaseClient, meId: string): 
 
   const [{ data: members }, { data: recent }] = await Promise.all([
     supabase
-      .from("conversation_members")
-      .select("conversation_id, user_id, last_read_at, profiles(id, prenom, nom, avatar_url, tel, show_tel)")
+      .from("feg_conversation_members")
+      .select("conversation_id, user_id, last_read_at, profiles:feg_profiles(id, prenom, nom, avatar_url, tel, show_tel)")
       .in("conversation_id", ids),
     supabase
-      .from("messages")
+      .from("feg_messages")
       .select("conversation_id, body, sender_id, created_at")
       .in("conversation_id", ids)
       .order("created_at", { ascending: false })

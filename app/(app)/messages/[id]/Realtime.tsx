@@ -18,7 +18,7 @@ export default function Realtime({ conversationId }: { conversationId: string })
       .channel(`conv-${conversationId}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${conversationId}` },
+        { event: "INSERT", schema: "public", table: "feg_messages", filter: `conversation_id=eq.${conversationId}` },
         () => router.refresh(),
       )
       .subscribe();

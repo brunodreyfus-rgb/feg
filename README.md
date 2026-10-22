@@ -57,7 +57,7 @@ Annuaire privé du groupe FEG. Chaque membre a un compte avec mot de passe, cré
 3. Dans Supabase → **SQL Editor**, lancez la requête suivante (avec votre email) :
 
    ```sql
-   update public.profiles set status = 'approved', is_admin = true
+   update public.feg_profiles set status = 'approved', is_admin = true
    where email = 'votre.email@exemple.com';
    ```
 

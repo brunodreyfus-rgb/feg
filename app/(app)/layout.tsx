@@ -9,8 +9,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { supabase, me } = await requireMember();
 
   const { data: rows } = await supabase
-    .from("conversation_members")
-    .select("last_read_at, conversations(last_message_at)")
+    .from("feg_conversation_members")
+    .select("last_read_at, conversations:feg_conversations(last_message_at)")
     .eq("user_id", me.id);
   const unread = (rows ?? []).filter((r) => {
     const c = r.conversations as unknown as { last_message_at: string } | null;
@@ -19,7 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   let pending = 0;
   if (me.is_admin) {
-    const { count } = await supabase.from("profiles").select("id", { count: "exact", head: true }).eq("status", "pending");
+    const { count } = await supabase.from("feg_profiles").select("id", { count: "exact", head: true }).eq("status", "pending");
     pending = count ?? 0;
   }
 

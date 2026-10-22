@@ -7,12 +7,12 @@ import { approve, reject, revoke, toggleAdmin } from "./actions";
 
 export default async function AdminPage() {
   const { supabase, me } = await requireAdmin();
-  const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+  const { data } = await supabase.from("feg_profiles").select("*").order("created_at", { ascending: false });
   const all = (data ?? []) as Profile[];
   const pending = all.filter((p) => p.status === "pending");
   const approved = all.filter((p) => p.status === "approved");
   const rejected = all.filter((p) => p.status === "rejected");
-  const { count: postCount } = await supabase.from("posts").select("id", { count: "exact", head: true });
+  const { count: postCount } = await supabase.from("feg_posts").select("id", { count: "exact", head: true });
 
   return (
     <div className="stack narrow">

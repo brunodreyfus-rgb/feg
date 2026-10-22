@@ -18,7 +18,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
   if (!conv) notFound();
 
   const { data: msgs } = await supabase
-    .from("messages")
+    .from("feg_messages")
     .select("*")
     .eq("conversation_id", id)
     .order("created_at", { ascending: false })
@@ -28,13 +28,13 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
   // Auteurs (utile pour la conversation "Tous")
   const senderIds = Array.from(new Set(messages.map((m) => m.sender_id).filter(Boolean))) as string[];
   const { data: senders } = senderIds.length
-    ? await supabase.from("profiles").select("id, prenom, nom").in("id", senderIds)
+    ? await supabase.from("feg_profiles").select("id, prenom, nom").in("id", senderIds)
     : { data: [] as { id: string; prenom: string; nom: string }[] };
   const nameOf = new Map((senders ?? []).map((s) => [s.id, fullName(s)]));
 
   // Marquer comme lu
   await supabase
-    .from("conversation_members")
+    .from("feg_conversation_members")
     .upsert({ conversation_id: id, user_id: me.id, last_read_at: new Date().toISOString() });
 
   const waTargets = conv.isBroadcast

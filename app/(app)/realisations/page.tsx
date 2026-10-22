@@ -22,7 +22,7 @@ export default async function RealisationsPage({
   const { ok, err, type } = await searchParams;
   const { supabase, me } = await requireMember();
 
-  let query = supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(100);
+  let query = supabase.from("feg_posts").select("*").order("created_at", { ascending: false }).limit(100);
   if (type && type in POST_TYPES) query = query.eq("type", type);
   const { data } = await query;
   const posts = (data ?? []) as Post[];
@@ -31,10 +31,10 @@ export default async function RealisationsPage({
   const ids = posts.map((p) => p.id);
   const [{ data: authors }, { data: interests }] = await Promise.all([
     authorIds.length
-      ? supabase.from("profiles").select("id, prenom, nom, avatar_url, titre").in("id", authorIds)
+      ? supabase.from("feg_profiles").select("id, prenom, nom, avatar_url, titre").in("id", authorIds)
       : Promise.resolve({ data: [] as Author[] }),
     ids.length
-      ? supabase.from("post_interests").select("post_id, user_id").in("post_id", ids)
+      ? supabase.from("feg_post_interests").select("post_id, user_id").in("post_id", ids)
       : Promise.resolve({ data: [] as { post_id: string; user_id: string }[] }),
   ]);
   const authorOf = new Map(((authors ?? []) as Author[]).map((a) => [a.id, a]));

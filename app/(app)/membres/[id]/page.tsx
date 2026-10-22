@@ -11,11 +11,11 @@ export default async function MemberPage({ params }: { params: Promise<{ id: str
   const { id } = await params;
   const { supabase, me } = await requireMember();
 
-  const { data: p } = await supabase.from("profiles").select("*").eq("id", id).maybeSingle<Profile>();
+  const { data: p } = await supabase.from("feg_profiles").select("*").eq("id", id).maybeSingle<Profile>();
   if (!p) notFound();
 
   const { data: posts } = await supabase
-    .from("posts")
+    .from("feg_posts")
     .select("*")
     .eq("author_id", id)
     .order("created_at", { ascending: false });
