@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import Logo from "@/components/Logo";
 
 function translate(msg: string) {
   if (/invalid login/i.test(msg)) return "Email ou mot de passe incorrect.";
@@ -34,11 +35,9 @@ export default function LoginPage() {
   return (
     <div className="auth-split">
       <div className="auth-brand">
-        <div className="row" style={{ gap: 12 }}>
-          <span className="logo" style={{ width: 48, height: 48, fontSize: 16 }}>FEG</span>
-          <span className="brand-name" style={{ fontSize: 18 }}>Frères en Guerre</span>
-        </div>
+        <span className="brand-name" style={{ fontSize: 18, color: "#fff" }}>Frères en Guerre · FEG</span>
         <div className="stack" style={{ maxWidth: 520 }}>
+          <Logo size={168} className="logo-hero" />
           <h1>L&apos;annuaire privé du groupe.</h1>
           <p style={{ fontSize: 18, color: "#C9CFD6" }}>
             Retrouver un frère, découvrir son parcours, lui écrire, partager nos projets. Accès réservé aux membres validés.

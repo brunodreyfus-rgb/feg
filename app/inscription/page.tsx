@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import Logo from "@/components/Logo";
 
 export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +55,7 @@ export default function SignupPage() {
     <div className="auth-center">
       <form className="auth-card" onSubmit={onSubmit}>
         <div className="row">
-          <span className="logo">FEG</span>
+          <Logo size={56} />
           <h2 style={{ fontSize: 24 }}>Demander un accès</h2>
         </div>
         <p className="muted">Votre demande sera validée par un administrateur du groupe.</p>

@@ -8,7 +8,7 @@ export function initials(p: Pick<Profile, "prenom" | "nom">) {
   return (((p.prenom || " ")[0] ?? "") + ((p.nom || " ")[0] ?? "")).trim().toUpperCase() || "?";
 }
 
-const PALETTE = ["#1E4D8C", "#2F6B5A", "#8C3A2E", "#4B3F8C", "#7A5A12", "#2E5E8C", "#5C4A3A", "#3A6B2E"];
+const PALETTE = ["#13298A", "#2F6B5A", "#8C3A2E", "#4B3F8C", "#7A5A12", "#2E5E8C", "#5C4A3A", "#3A6B2E"];
 export function colorFor(id: string) {
   let h = 0;
   for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
@@ -26,7 +26,7 @@ export function waLink(tel: string | null | undefined, text?: string) {
 }
 
 export const POST_TYPES = {
-  projet: { label: "Projet", bg: "#E6EDF7", fg: "#1E4D8C" },
+  projet: { label: "Projet", bg: "#E8ECF8", fg: "#13298A" },
   realisation: { label: "Réalisation", bg: "#E3F1E8", fg: "#1B6E45" },
   recherche: { label: "Recherche partenaire", bg: "#F6EEDC", fg: "#7A5410" },
 } as const;

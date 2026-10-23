@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requestAccess } from "./actions";
+import Logo from "@/components/Logo";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +25,7 @@ export default async function PendingPage() {
     return (
       <div className="auth-center">
         <form action={requestAccess} className="auth-card">
-          <span className="logo">FEG</span>
+          <Logo size={72} />
           <h2 style={{ fontSize: 24 }}>Demander l&apos;accès à l&apos;annuaire</h2>
           <p className="muted">Connecté en tant que {user.email}. Complétez ces informations : un administrateur validera votre accès.</p>
           <div className="fields">
@@ -46,7 +46,7 @@ export default async function PendingPage() {
   return (
     <div className="auth-center">
       <div className="auth-card">
-        <span className="logo">FEG</span>
+        <Logo size={72} />
         <h2 style={{ fontSize: 24 }}>{rejected ? "Accès non validé" : `Merci${me.prenom ? " " + me.prenom : ""}, votre demande est en attente`}</h2>
         <p className="muted">
           {rejected
@@ -54,7 +54,8 @@ export default async function PendingPage() {
             : "Un administrateur du groupe va vérifier votre demande. Revenez sur cette page une fois prévenu : vous pourrez alors créer votre fiche."}
         </p>
         <div className="row">
-          <Link href="/en-attente" className="btn btn-primary">Vérifier à nouveau</Link>
+          {/* lien classique (rechargement complet) pour relire le statut à coup sûr */}
+          <a href="/" className="btn btn-primary">Vérifier à nouveau</a>
           {signOut}
         </div>
       </div>

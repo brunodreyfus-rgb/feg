@@ -1,12 +1,14 @@
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
+import Logo from "@/components/Logo";
 import type { ConvSummary } from "@/lib/conversations";
 
 export function ConvAvatar({ c, size = 44 }: { c: ConvSummary; size?: number }) {
   if (c.avatar) return <Avatar p={c.avatar} size={size} />;
+  if (c.isBroadcast) return <Logo size={size} />;
   return (
-    <span className="avatar" aria-hidden="true" style={{ width: size, height: size, fontSize: 13, background: c.isBroadcast ? "#15202B" : "#1E4D8C" }}>
-      {c.isBroadcast ? "FEG" : c.members.length + 1}
+    <span className="avatar" aria-hidden="true" style={{ width: size, height: size, fontSize: 13, background: "#13298A" }}>
+      {c.members.length + 1}
     </span>
   );
 }

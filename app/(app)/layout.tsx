@@ -2,6 +2,7 @@ import Link from "next/link";
 import Avatar from "@/components/Avatar";
 import Nav from "@/components/Nav";
 import { requireMember } from "@/lib/auth";
+import Logo from "@/components/Logo";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <header className="header">
         <div className="header-inner">
           <Link href="/" className="brand" aria-label="Frères en Guerre — accueil">
-            <span className="logo">FEG</span>
+            <Logo size={42} />
             <span className="brand-name">Frères en Guerre</span>
           </Link>
           <Nav isAdmin={me.is_admin} unread={unread} pending={pending} />
