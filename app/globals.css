@@ -183,3 +183,12 @@ dl.info dd { margin: 0; word-break: break-word; }
 .logo-img { flex: none; border-radius: 999px; background: #fff; object-fit: cover; display: block; box-shadow: 0 0 0 1px var(--line); }
 .logo-hero { box-shadow: 0 0 0 6px rgba(255,255,255,.15); }
 .auth-card > .logo-img { align-self: center; }
+
+/* --- IA --- */
+.ai-box { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border-radius: 12px; background: var(--accent-soft); border: 1px solid #cfd8f0; }
+.post .ai-box { margin-top: 4px; }
+.ai-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.ai-person { display: flex; flex-direction: column; gap: 8px; padding: 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+.ai-btn { align-self: flex-start; }
+.ai-banner { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 16px 20px; border-radius: var(--radius); background: var(--accent-soft); border: 1px solid #cfd8f0; color: var(--ink); text-decoration: none; }
+.ai-banner:hover { border-color: var(--accent); color: var(--ink); }

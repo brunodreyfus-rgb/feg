@@ -1,10 +1,12 @@
 import Link from "next/link";
+import AiPanel from "@/components/AiPanel";
 import Avatar from "@/components/Avatar";
 import { requireMember } from "@/lib/auth";
 import type { Post } from "@/lib/types";
 import { POST_TYPES, formatDate, fullName } from "@/lib/utils";
 import { startDirect } from "../messages/actions";
 import { createPost, deletePost, toggleInterest } from "./actions";
+import { aiConfigured } from "@/lib/ai/provider";
 
 const ERR: Record<string, string> = {
   titre: "Ajoutez un titre.",
@@ -21,6 +23,7 @@ export default async function RealisationsPage({
 }) {
   const { ok, err, type } = await searchParams;
   const { supabase, me } = await requireMember();
+  const aiOn = aiConfigured();
 
   let query = supabase.from("feg_posts").select("*").order("created_at", { ascending: false }).limit(100);
   if (type && type in POST_TYPES) query = query.eq("type", type);
@@ -132,6 +135,7 @@ export default async function RealisationsPage({
                 </form>
               )}
             </div>
+            {aiOn && <AiPanel kind="project" postId={p.id} compact buttonLabel="Qui peut aider ? (IA)" />}
           </article>
         );
       })}

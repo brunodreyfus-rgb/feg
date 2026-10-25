@@ -329,3 +329,55 @@ create policy "feg_storage_delete" on storage.objects for delete to authenticate
 --  update public.feg_profiles set status = 'approved', is_admin = true
 --  where email = 'votre.email@exemple.com';
 -- =====================================================================
+
+-- ---------------------------------------------------------------------
+-- MODULE IA (aussi disponible seul dans supabase/ai.sql)
+create table if not exists public.feg_ai_runs (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references public.feg_profiles(id) on delete cascade default auth.uid(),
+  kind        text not null check (kind in ('synergies','project','ask','admin')),
+  key         text not null default '',
+  result      jsonb not null,
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists feg_ai_runs_user_idx on public.feg_ai_runs (user_id, created_at desc);
+
+alter table public.feg_ai_runs enable row level security;
+
+drop policy if exists ai_select_own on public.feg_ai_runs;
+create policy ai_select_own on public.feg_ai_runs for select
+  using (user_id = auth.uid());
+
+drop policy if exists ai_insert_own on public.feg_ai_runs;
+create policy ai_insert_own on public.feg_ai_runs for insert
+  with check (user_id = auth.uid() and public.feg_is_approved());
+
+-- ---------------------------------------------------------------------
+-- « MON LIEN AVEC … » (aussi disponible seul dans supabase/relations.sql)
+create table if not exists public.feg_relations (
+  owner_id    uuid not null references public.feg_profiles(id) on delete cascade default auth.uid(),
+  member_id   uuid not null references public.feg_profiles(id) on delete cascade,
+  level       text not null default 'croise' check (level in ('proche','croise','pas_encore')),
+  context     text check (char_length(context) <= 200),
+  note        text check (char_length(note) <= 4000),
+  updated_at  timestamptz not null default now(),
+  primary key (owner_id, member_id),
+  check (owner_id <> member_id)
+);
+
+alter table public.feg_relations enable row level security;
+
+drop policy if exists rel_select_own on public.feg_relations;
+create policy rel_select_own on public.feg_relations for select using (owner_id = auth.uid());
+
+drop policy if exists rel_insert_own on public.feg_relations;
+create policy rel_insert_own on public.feg_relations for insert
+  with check (owner_id = auth.uid() and public.feg_is_approved());
+
+drop policy if exists rel_update_own on public.feg_relations;
+create policy rel_update_own on public.feg_relations for update
+  using (owner_id = auth.uid()) with check (owner_id = auth.uid());
+
+drop policy if exists rel_delete_own on public.feg_relations;
+create policy rel_delete_own on public.feg_relations for delete using (owner_id = auth.uid());

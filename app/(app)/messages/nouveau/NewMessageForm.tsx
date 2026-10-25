@@ -6,7 +6,7 @@ import { createGroupAndSend } from "../actions";
 
 type M = { id: string; name: string; prenom: string; tel: string | null; secteur: string | null };
 
-export default function NewMessageForm({ members, preselected }: { members: M[]; preselected: string[] }) {
+export default function NewMessageForm({ members, preselected, initialText = "" }: { members: M[]; preselected: string[]; initialText?: string }) {
   const [sel, setSel] = useState<Set<string>>(new Set(preselected));
   const [filter, setFilter] = useState("");
   const [wa, setWa] = useState(false);
@@ -98,7 +98,7 @@ export default function NewMessageForm({ members, preselected }: { members: M[];
 
       <label className="field full">
         Message
-        <textarea className="input" name="body" rows={6} required maxLength={5000} placeholder="Ex. : Réunion mensuelle jeudi 20h, merci de confirmer votre présence." />
+        <textarea className="input" name="body" rows={6} required maxLength={5000} defaultValue={initialText} placeholder="Ex. : Réunion mensuelle jeudi 20h, merci de confirmer votre présence." />
       </label>
 
       <label className="check">

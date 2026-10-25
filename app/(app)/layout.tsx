@@ -3,6 +3,7 @@ import Avatar from "@/components/Avatar";
 import Nav from "@/components/Nav";
 import { requireMember } from "@/lib/auth";
 import Logo from "@/components/Logo";
+import { aiConfigured } from "@/lib/ai/provider";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             <Logo size={42} />
             <span className="brand-name">Frères en Guerre</span>
           </Link>
-          <Nav isAdmin={me.is_admin} unread={unread} pending={pending} />
+          <Nav isAdmin={me.is_admin} unread={unread} pending={pending} aiEnabled={aiConfigured()} />
           <div className="row">
             <Link href={`/membres/${me.id}`} aria-label="Voir ma fiche publique">
               <Avatar p={me} size={36} />

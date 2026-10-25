@@ -2,14 +2,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Props = { isAdmin: boolean; unread: number; pending: number };
+type Props = { isAdmin: boolean; unread: number; pending: number; aiEnabled?: boolean };
 
-export default function Nav({ isAdmin, unread, pending }: Props) {
+export default function Nav({ isAdmin, unread, pending, aiEnabled = false }: Props) {
   const path = usePathname();
   const tabs = [
     { href: "/", label: "Annuaire", active: path === "/" || path.startsWith("/membres") },
     { href: "/messages", label: "Messages", active: path.startsWith("/messages"), badge: unread },
     { href: "/realisations", label: "Réalisations", active: path.startsWith("/realisations") },
+    ...(aiEnabled ? [{ href: "/synergies", label: "Synergies IA", active: path.startsWith("/synergies") }] : []),
     { href: "/ma-fiche", label: "Ma fiche", active: path.startsWith("/ma-fiche") },
     ...(isAdmin ? [{ href: "/admin", label: "Admin", active: path.startsWith("/admin"), badge: pending }] : []),
   ];

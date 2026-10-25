@@ -111,3 +111,49 @@ npm run dev                   # http://localhost:3000
 ```
 
 Chaque `git push` sur GitHub met le site à jour automatiquement sur Vercel.
+
+---
+
+## Assistant IA « Synergies »
+
+Onglet **Synergies IA** :
+- **Mes synergies** : propose 3 à 5 membres à rencontrer, avec la raison et un premier message.
+- **Demander à l'IA** : réponses aux questions sur le réseau.
+- **Synergies du groupe** : vue réservée aux admins.
+
+Sous chaque publication **Réalisations**, le bouton **Qui peut aider ? (IA)** propose des membres.
+
+**Ce que lit l'IA** : les fiches validées, les publications et les 80 derniers messages du fil « Tous ». Elle ne lit **jamais** les conversations privées, ni les téléphones et emails.
+
+**Garde-fous** :
+- les réponses sont mémorisées 24 h (bouton « Actualiser » pour recalculer) ;
+- chaque membre a droit à 20 demandes par jour, un admin à 60.
+
+### Mise en route
+1. Dans Supabase, ouvrez **SQL Editor** et lancez le contenu de `supabase/ai.sql`.
+2. Sur <https://console.anthropic.com>, ajoutez un moyen de paiement, puis créez une clé dans **API Keys**.
+3. Dans Vercel, ajoutez `ANTHROPIC_API_KEY` = cette clé, puis **Redeploy**.
+   - Facultatif : `AI_MODEL` (par défaut `claude-sonnet-5-5`).
+   - Pour utiliser OpenAI : `AI_PROVIDER=openai`, `OPENAI_API_KEY` et `AI_MODEL`.
+
+**Coût indicatif** : quelques centimes par demande pour un groupe d'environ 150 membres, plafonné par les limites ci-dessus. Fixez un plafond de dépense mensuel dans la console Anthropic.
+
+> **IA désactivée par défaut** : tant que `ANTHROPIC_API_KEY` (ou `OPENAI_API_KEY` + `AI_MODEL`) n'est pas renseignée dans Vercel, l'onglet « Synergies IA » et les boutons IA restent invisibles, et rien n'est facturé.
+
+---
+
+## « Mon lien avec … » (notes privées)
+
+Sur la fiche de chaque membre, le cadre **Mon lien avec …** permet de noter :
+- si on se connaît : *Je le connais personnellement*, *On s'est déjà croisés* ou *Pas encore rencontré* ;
+- où et comment on s'est connus ;
+- des notes libres.
+
+Ces notes sont **strictement privées**. La règle est appliquée dans la base : seul leur auteur peut les lire, le membre concerné ne les voit pas.
+
+Dans l'annuaire :
+- un badge (« Je le connais », « Déjà croisé », « À rencontrer ») apparaît sur les cartes ;
+- les filtres « Ceux que je connais » et « À rencontrer » permettent de trier ;
+- la recherche inclut aussi vos propres notes.
+
+**Mise en route** : dans Supabase → SQL Editor, lancez le contenu de `supabase/relations.sql`.

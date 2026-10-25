@@ -6,9 +6,18 @@ import { requireMember } from "@/lib/auth";
 import type { Post, Profile } from "@/lib/types";
 import { POST_TYPES, formatDate, fullName, safeUrl, waLink } from "@/lib/utils";
 import { startDirect } from "../../messages/actions";
+import RelationCard from "@/components/RelationCard";
+import type { Relation } from "@/lib/relations";
 
-export default async function MemberPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function MemberPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ lien?: string }>;
+}) {
   const { id } = await params;
+  const { lien } = await searchParams;
   const { supabase, me } = await requireMember();
 
   const { data: p } = await supabase.from("feg_profiles").select("*").eq("id", id).maybeSingle<Profile>();
@@ -21,6 +30,9 @@ export default async function MemberPage({ params }: { params: Promise<{ id: str
     .order("created_at", { ascending: false });
 
   const isMe = p.id === me.id;
+  const { data: relation } = isMe
+    ? { data: null }
+    : await supabase.from("feg_relations").select("*").eq("owner_id", me.id).eq("member_id", p.id).maybeSingle<Relation>();
   const tel = p.show_tel || isMe ? p.tel : null;
   const wa = waLink(tel, `Shalom ${p.prenom}, c'est ${me.prenom} (Frères en Guerre).`);
   const linkedin = safeUrl(p.linkedin_url);
@@ -131,6 +143,7 @@ export default async function MemberPage({ params }: { params: Promise<{ id: str
         </div>
 
         <aside className="side">
+          {!isMe && <RelationCard memberId={p.id} prenom={p.prenom || fullName(p)} relation={relation} status={lien} />}
           <section className="card card-tight">
             <h2 style={{ fontSize: 18, marginBottom: 14 }}>Infos personnelles</h2>
             <dl className="info">

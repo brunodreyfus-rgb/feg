@@ -5,8 +5,8 @@ import ConvList from "../ConvList";
 import MessagesHeader from "../Header";
 import NewMessageForm from "./NewMessageForm";
 
-export default async function NewMessagePage({ searchParams }: { searchParams: Promise<{ to?: string }> }) {
-  const { to } = await searchParams;
+export default async function NewMessagePage({ searchParams }: { searchParams: Promise<{ to?: string; text?: string }> }) {
+  const { to, text } = await searchParams;
   const { supabase, me } = await requireMember();
   const convs = await getConversations(supabase, me.id);
   const { data } = await supabase
@@ -30,7 +30,7 @@ export default async function NewMessagePage({ searchParams }: { searchParams: P
       <div className="msg-layout">
         <ConvList convs={convs} />
         <section className="thread-panel" style={{ padding: 24 }}>
-          <NewMessageForm members={members} preselected={to ? to.split(",") : []} />
+          <NewMessageForm members={members} preselected={to ? to.split(",") : []} initialText={text ? text.slice(0, 2000) : ""} />
         </section>
       </div>
     </div>
