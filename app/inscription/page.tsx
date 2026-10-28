@@ -15,6 +15,7 @@ export default function SignupPage() {
     const fd = new FormData(e.currentTarget);
     const password = String(fd.get("password"));
     if (password.length < 8) return setError("Le mot de passe doit faire au moins 8 caractères.");
+    if (password !== String(fd.get("password2"))) return setError("Les deux mots de passe ne sont pas identiques.");
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
@@ -69,6 +70,9 @@ export default function SignupPage() {
         <label className="field">Téléphone WhatsApp<input className="input" name="tel" type="tel" placeholder="+972 5…" autoComplete="tel" /></label>
         <label className="field">Mot de passe <span className="hint">8 caractères minimum</span>
           <input className="input" name="password" type="password" required minLength={8} autoComplete="new-password" />
+        </label>
+        <label className="field">Confirmer le mot de passe
+          <input className="input" name="password2" type="password" required minLength={8} autoComplete="new-password" />
         </label>
         <label className="field">Qui vous a invité dans le groupe ?<input className="input" name="parrain" required placeholder="Nom du membre parrain" /></label>
         <div className="row">

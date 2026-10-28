@@ -15,8 +15,8 @@ const SECTEURS = [
   "Industrie", "Juridique", "Médias", "Santé", "Sécurité & Défense", "Social & Associatif", "Tech", "Tourisme", "Autre",
 ];
 
-export default async function MaFichePage({ searchParams }: { searchParams: Promise<{ ok?: string; err?: string }> }) {
-  const { ok, err } = await searchParams;
+export default async function MaFichePage({ searchParams }: { searchParams: Promise<{ ok?: string; err?: string; mdp?: string }> }) {
+  const { ok, err, mdp } = await searchParams;
   const { me } = await requireMember();
 
   const parcours = (me.parcours ?? []).map((p) => [p.poste, p.org, p.dates].filter(Boolean).join(" | ")).join("\n");
@@ -36,6 +36,7 @@ export default async function MaFichePage({ searchParams }: { searchParams: Prom
       </div>
 
       {ok && <div className="alert alert-ok" role="status">Fiche enregistrée.</div>}
+      {mdp && <div className="alert alert-ok" role="status">Mot de passe modifié.</div>}
       {err && <div className="alert alert-error" role="alert">{ERRORS[err] ?? "Erreur."}</div>}
 
       <section className="card row" style={{ gap: 20 }}>
@@ -67,7 +68,7 @@ export default async function MaFichePage({ searchParams }: { searchParams: Prom
         <label className="check">
           <input type="checkbox" name="show_tel" defaultChecked={me.show_tel} /> Afficher mon téléphone / WhatsApp aux membres
         </label>
-        <p className="xs muted">Email de connexion : {me.email}</p>
+        <p className="xs muted">Email de connexion : {me.email} · <Link href="/mot-de-passe/nouveau">Changer mon mot de passe</Link></p>
       </section>
 
       <section className="card stack">

@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
 
 function translate(msg: string) {
-  if (/invalid login/i.test(msg)) return "Email ou mot de passe incorrect.";
+  if (/invalid login/i.test(msg)) return "Email ou mot de passe incorrect. Si vous l'avez oublié, utilisez « Mot de passe oublié ».";
   if (/email not confirmed/i.test(msg)) return "Votre email n'est pas encore confirmé : cliquez sur le lien reçu par email.";
   return msg;
 }
@@ -14,6 +14,10 @@ function translate(msg: string) {
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState(false);
+  useEffect(() => {
+    setInfo(new URLSearchParams(window.location.search).get("info") === "lien");
+  }, []);
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -48,6 +52,12 @@ export default function LoginPage() {
       <div className="auth-form-wrap">
         <form className="auth-form" onSubmit={onSubmit}>
           <h2 style={{ fontSize: 28 }}>Connexion</h2>
+          {info && !error && (
+            <div className="alert alert-info">
+              Le lien reçu par email a déjà servi, a expiré ou a été ouvert dans un autre navigateur. Si c&apos;était la
+              confirmation de votre inscription, votre adresse est sans doute déjà confirmée : essayez de vous connecter.
+            </div>
+          )}
           {error && <div className="alert alert-error" role="alert">{error}</div>}
           <label className="field">
             Email
